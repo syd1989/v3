@@ -1,6 +1,6 @@
 ﻿
 # cron "55 9,21 * * *" 
-# const $ = new Env('抢极速版全品卷15-5')
+# const $ = new Env('PY-极速卷15-5')
 import json
 import math
 import random
