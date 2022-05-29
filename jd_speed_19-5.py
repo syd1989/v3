@@ -1,7 +1,7 @@
 ﻿
-# cron "58 59 23 * * *" 
-
-
+# cron "55 23 * * *" 
+# const $ = new Env('抢极速版全品卷19-5')
+import json
 import math
 import random
 import threading
@@ -34,7 +34,7 @@ mycookies = ["",]
 starttime = 1653094799000 
 delay_time = 0.2
 range_n = 20  # 线程个数20
-range_sleep = 0.04  # 间隔时间
+range_sleep = 0.2  # 间隔时间
 
 # 没用的参数
 log_list = []
@@ -51,7 +51,7 @@ def get_log_list(num):
     global log_list
     try:
         for i in range(num):
-            url = f'http://192.168.6.105:5889/'
+            url = f'http://192.168.6.105:5889/log'
             res = requests.get(url=url).json()
             log_list.append(res)
     except:
