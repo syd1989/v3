@@ -1,5 +1,5 @@
 ﻿
-# cron "55 20 * * *" 
+# cron "55 19 * * *" 
 # const $ = new Env('抢极速版全品卷15-8')
 import json
 import math
