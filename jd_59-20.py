@@ -1,3 +1,5 @@
+# cron "55 8,17 * * *" 
+# new Env('PY-全品59-20')
 import json
 import random
 import re
@@ -6,13 +8,14 @@ import time
 import requests
 import datetime
 from urllib.parse import quote, unquote
-
+import requests,os
 starttime = 1652507999000
 
-mycookies = [
-    '',
-]
-
+#os.environ 获取环境变量
+cookie =os.environ["JD_COOKIE"].split('&')
+#split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
+mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
+#print(mycookies)
 
 range_n = 3  # 链接个数
 range_sleep = 0.5  # 间隔时间
