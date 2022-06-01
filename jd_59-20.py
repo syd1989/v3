@@ -1,3 +1,4 @@
+
 # cron "55 8,17 * * *" 
 # new Env('PY-全品59-20')
 import json
@@ -7,38 +8,49 @@ import threading
 import time
 import requests
 import datetime
-from urllib.parse import quote, unquote
 import requests,os
 starttime = 1652507999000
 
+'''
+必须用appck 如  pin=xxxxx;wskey=xxxxxxxxx;
+'''
 #os.environ 获取环境变量
-cookie =os.environ["JD_COOKIE"].split('&')
+cookie =os.environ["JD_WSCK"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
 mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
 #print(mycookies)
 
-range_n = 3  # 链接个数
-range_sleep = 0.5  # 间隔时间
-delay_time = 0.4
+range_n = 4  # 链接个数
+range_sleep = 0.2  # 间隔时间
+delay_time = 0.2
 
 # 辅助参数
 atime = 0
 re_body = re.compile(r'body=.*?&')
 
 
-def get_sign_api(functionId, body):
-    sign_api = 'http://action.teixing.com:8888/jd/sign'
+def get_sign_api(functionId, body, cookie):
+    #url个人中心接口说明获取
+    sign_api = 'http://jd.api.mumian.xyz/getsign'
+
+    #平台登陆账号
+    name = ""
+    #个人中心获取的token
+    token = ''
 
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
     }
     data = {
+        'name': name,
+        'token': token,
         'functionId': functionId,
-        'body': json.dumps(body, ensure_ascii=False)
+        'body': json.dumps(body),
+        'cookie': cookie
     }
     res = requests.post(url=sign_api, headers=headers, data=data, timeout=30).json()
     if res['code'] == 0:
-        return res['data']
+        return res
     else:
         print(res['msg'])
         return -1
@@ -52,11 +64,10 @@ def randomString(e, flag=False):
 
 
 def getCcFeedInfo(cookie, index):
-    eid = randomString(16)
     body = {
         "categoryId": 118,
         "childActivityUrl": "openapp.jdmobile://virtual?params={\"category\":\"jump\",\"des\":\"couponCenter\"}",
-        "eid": eid,
+        "eid": randomString(16),
         "globalLat": "",
         "globalLng": "",
         "lat": "",
@@ -66,23 +77,17 @@ def getCcFeedInfo(cookie, index):
         "pageClickKey": "Coupons_GetCenter",
         "pageNum": 1,
         "pageSize": 20,
-        "shshshfpb": ""
+        "shshshfpb": "JD012145b9mzevXVyWvr165405174054301ejNbcuIv8VSno6eCZStBf0fVIua6iwM6cL44g9MZnSAECduTdNmXxsObMP7zW-02thsOhcqcpf59_wTrvncSpA15d8mj2~bkjSzlCPBu8eVzymr1dfWMCxAcchOdsgI66dE3HwFTsiLlxG5YikoTkmNYRUzHRcMp5DAMZExumhvvLCqbpC0fCkPFsYCz7x4NkuBhSYrwGKxJsR0EHDjEtOFck1GYnmw8klHT_06YRuRU7UM2iq_Zg"
     }
-    res = get_sign_api('getCcFeedInfo', body)
+    res = get_sign_api('getCcFeedInfo', body, cookie)
     if res == -1:
         return -1
     else:
-        url = f'https://api.m.jd.com?functionId=getCcFeedInfo{res}&eid={eid}'
-        headers = {
-            "cookie": cookie,
-            "user-agent": "okhttp/3.12.1;jdmall;android;version/11.0.2;build/97565;",
-            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        }
-        data = {
-            "body": json.dumps(body)
-        }
+        url = res['url']
+        headers = json.loads(json.dumps(res['headers']))
+        data = json.loads(json.dumps(res['data']))
         res = requests.post(url=url, headers=headers, data=data, timeout=30).json()
-        print(res)
+        # print(res)
         if res['code'] == '0':
             for coupon in res['result']['couponList']:
                 if coupon['title'] != None and '每周可领一次' in coupon['title']:
@@ -96,41 +101,34 @@ def getCcFeedInfo(cookie, index):
             return -1
 
 
-def get_receiveNecklaceCoupon_sign(receiveKey):
-    eid = randomString(16)
+def get_receiveNecklaceCoupon_sign(receiveKey, cookie):
     body = {"channel": "领券中心",
             "childActivityUrl": "openapp.jdmobile://virtual?params={\"category\":\"jump\",\"des\":\"couponCenter\"}",
             "couponSource": "manual",
             "couponSourceDetail": None,
-            "eid": eid,
+            "eid": randomString(16),
             "extend": receiveKey,
             "lat": "",
             "lng": "",
             "pageClickKey": "Coupons_GetCenter",
             "rcType": "4",
             "riskFlag": 1,
-            "shshshfpb": "",
+            "shshshfpb": "JD012145b9mzevXVyWvr165405174054301ejNbcuIv8VSno6eCZStBf0fVIua6iwM6cL44g9MZnSAECduTdNmXxsObMP7zW-02thsOhcqcpf59_wTrvncSpA15d8mj2~bkjSzlCPBu8eVzymr1dfWMCxAcchOdsgI66dE3HwFTsiLlxG5YikoTkmNYRUzHRcMp5DAMZExumhvvLCqbpC0fCkPFsYCz7x4NkuBhSYrwGKxJsR0EHDjEtOFck1GYnmw8klHT_06YRuRU7UM2iq_Zg",
             "source": "couponCenter_app",
             "subChannel": "feeds流"
             }
     # res = get_sign_api('newReceiveRvcCoupon', body) # 领券
-    res = get_sign_api('receiveNecklaceCoupon', body)  # 59-20
+    res = get_sign_api('receiveNecklaceCoupon', body, cookie)  # 59-20
     if res == -1:
         return -1
     else:
-        url = f'https://api.m.jd.com?functionId=receiveNecklaceCoupon{res}&eid={eid}'
-        data = {
-            "body": json.dumps(body, ensure_ascii=False)
-        }
-        return [url, data]
+        url = res['url']
+        headers = json.loads(json.dumps(res['headers']))
+        data = json.loads(json.dumps(res['data']))
+        return [url, data, headers]
 
 
-def receiveNecklaceCoupon(url, body, cookie, index):
-    headers = {
-        "cookie": cookie,
-        "user-agent": "okhttp/3.12.1;jdmall;android;version/11.0.2;build/97565;",
-        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-    }
+def receiveNecklaceCoupon(url, body, headers, index):
     res = requests.post(url=url, headers=headers, data=body, timeout=30).json()
     try:
         if res['code'] == '0' and res['msg'] == '响应成功':
@@ -158,12 +156,14 @@ def use_thread(cookie, index):
         tasks = list()
         s = 0
         while s < range_n:
-            res = get_receiveNecklaceCoupon_sign(receiveKeys[index])
+            res = get_receiveNecklaceCoupon_sign(receiveKeys[index], cookie)
             if res != -1:
                 url = res[0]
                 body = res[1]
-                tasks.append(threading.Thread(target=receiveNecklaceCoupon, args=(url, body, cookie, index)))
-                tasks.append(threading.Thread(target=receiveNecklaceCoupon, args=(url, body, cookie, index)))
+                headers = res[2]
+
+                tasks.append(threading.Thread(target=receiveNecklaceCoupon, args=(url, body, headers, index)))
+                tasks.append(threading.Thread(target=receiveNecklaceCoupon, args=(url, body, headers, index)))
                 s = s + 1
         print(f'账号{index + 1}：{range_n * 2}条抢券链接生成完毕，等待抢券')
         while True:
