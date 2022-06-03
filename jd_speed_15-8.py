@@ -33,21 +33,14 @@ cookie =os.environ["JD_COOKIE"].split('&')
 mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
 #print(mycookies)
 
+starttime = 1652410410000  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
 
-starttime = 1653094799000 
-delay_time = 0.2
-range_n = 20  # 线程个数20
-range_sleep = 0.2  # 间隔时间
+range_n = 40  # 线程个数
+range_sleep = 0.08  # 间隔时间
 
 # 没用的参数
 log_list = []
 atime = 0
-PUSH_PLUS_TOKEN = ''
-title = '京东15-8抢券成功'
-content = []
-
-if "PUSH_PLUS_TOKEN" in os.environ and len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
-    PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
 
 
 def get_log_list(num):
