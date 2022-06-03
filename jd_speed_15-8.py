@@ -1,5 +1,5 @@
 ﻿
-# cron "55 19 * * *" 
+# cron "55 8,11,14,19 * * *" 
 # new Env('PY-极速卷15-8')
 import json
 import math
@@ -42,7 +42,7 @@ range_sleep = 0.08  # 间隔时间
 log_list = []
 atime = 0
 
-
+# 本地
 def get_log_list(num):
     global log_list
     try:
@@ -52,6 +52,24 @@ def get_log_list(num):
             log_list.append(res)
     except:
         log_list = []
+    return log_list
+
+
+# 远程
+def get_log_list(num):
+    global log_list
+    url = f'http://110.40.128.21:1998/newlog?func=jisu&num={num}'
+    token = ''
+    headers = {
+        'Authorization': 'Bearer ' + token
+    }
+    res = requests.get(url=url,headers=headers).json()
+    if res['code'] == '0':
+        log_list = res['alog']
+    else:
+        print(res['msg'])
+        log_list = []
+
     return log_list
 
 
@@ -69,7 +87,7 @@ def Ua():
     return UA
 
 
-def qiang_quan(cookie, i, index):
+def qiang_15_8(cookie, i, index):
     url = 'https://api.m.jd.com/client.action?functionId=lite_newBabelAwardCollection&client=wh5'
     headers = {
         "Accept": "*/*",
@@ -95,8 +113,6 @@ def qiang_quan(cookie, i, index):
         # print(res)
         if res['code'] == '0':
             print(f"账号{index + 1}：{res['subCodeMsg']}")
-            if '成功' in res['subCodeMsg']:
-                content.append(f"账号{cookie[90:-1]}：{res['subCodeMsg']}")
         else:
             print(f"账号{index + 1}：{res['errmsg']}")
     except:
@@ -119,13 +135,10 @@ def jdtime():
 def use_thread(cookie, index):
     tasks = list()
     for i in range(range_n):
-        tasks.append(threading.Thread(target=qiang_quan, args=(cookie, index * 50 + i, index)))
+        tasks.append(threading.Thread(target=qiang_15_8, args=(cookie, index * 50 + i, index)))
     print(f'账号{index + 1}：等待抢券')
     while True:
-        #jdtime>=starttime时启动
         if jdtime() >= starttime:
-            #starttime提前一秒，所以需要加上延迟
-            time.sleep(delay_time)
             for task in tasks:
                 task.start()
                 time.sleep(range_sleep)
@@ -133,44 +146,9 @@ def use_thread(cookie, index):
                 task.join()
             break
 
-# push推送
-def push_plus_bot(title, content):
-    try:
-        print("\n")
-        if not PUSH_PLUS_TOKEN:
-            print("PUSHPLUS服务的token未设置!!\n取消推送")
-            return
-        print("PUSHPLUS服务启动")
-        url = 'http://pushplus.plus/send'
-        data = {
-            "token": PUSH_PLUS_TOKEN,
-            "title": title,
-            "content": content
-        }
-        body = json.dumps(data).encode(encoding='utf-8')
-        headers = {'Content-Type': 'application/json'}
-        response = requests.post(url=url, data=body, headers=headers).json()
-        if response['code'] == 200:
-            print('推送成功！')
-        else:
-            print('推送失败！')
-            print(response)
-
-    except Exception as e:
-        print(e)
-
-
-
 
 if __name__ == '__main__':
     print('极速版抢券准备...')
-
-    h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
-    print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
-    print ("下一个整点是：", h )
-    #mktime返回秒数时间戳
-    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1000
-    print("time stamp=",starttime)        
     while True:
         if starttime - int(time.time() * 1000) <= 180000:
             break
@@ -178,7 +156,8 @@ if __name__ == '__main__':
             if int(time.time() * 1000) - atime >= 30000:
                 atime = int(time.time() * 1000)
                 print(f'等待获取log中，还差{int((starttime - int(time.time() * 1000)) / 1000)}秒')
-    get_log_list(len(mycookies) * 50)
+
+    get_log_list(len(mycookies) * 100)
     if len(log_list) != 0:
         print(f'{len(log_list)}条log获取完毕')
         threads = []
@@ -193,9 +172,3 @@ if __name__ == '__main__':
 
     else:
         print('暂无可用log')
-
-    #发送通知
-    if '成功' in content:
-        push_plus_bot(title, content)
-    else:
-        print('抢券失败')
