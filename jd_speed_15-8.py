@@ -1,5 +1,4 @@
-﻿
-# cron "55 8,11,14,19 * * *" 
+﻿# cron "55 8,11,14,19 * * *" 
 # new Env('PY-极速卷15-8')
 import json
 import math
@@ -34,22 +33,17 @@ mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6]
 #print(mycookies)
 
 
-starttime = 1653094799000 
-delay_time = 0.2
-range_n = 40  # 线程个数20
+starttime = 1652410410000  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
+
+range_n = 40  # 线程个数
 range_sleep = 0.08  # 间隔时间
 
 # 没用的参数
 log_list = []
 atime = 0
-PUSH_PLUS_TOKEN = ''
-title = '京东15-8抢券成功'
-content = []
-
-if "PUSH_PLUS_TOKEN" in os.environ and len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
-    PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
 
 
+# 本地LOG
 def get_log_list(num):
     global log_list
     try:
@@ -60,6 +54,8 @@ def get_log_list(num):
     except:
         log_list = []
     return log_list
+
+
 
 
 def randomString(e):
@@ -102,8 +98,6 @@ def qiang_quan(cookie, i, index):
         # print(res)
         if res['code'] == '0':
             print(f"账号{index + 1}：{res['subCodeMsg']}")
-            if '成功' in res['subCodeMsg']:
-                content.append(f"账号{cookie[90:-1]}：{res['subCodeMsg']}")
         else:
             print(f"账号{index + 1}：{res['errmsg']}")
     except:
@@ -129,10 +123,7 @@ def use_thread(cookie, index):
         tasks.append(threading.Thread(target=qiang_quan, args=(cookie, index * 50 + i, index)))
     print(f'账号{index + 1}：等待抢券')
     while True:
-        #jdtime>=starttime时启动
         if jdtime() >= starttime:
-            #starttime提前一秒，所以需要加上延迟
-            time.sleep(delay_time)
             for task in tasks:
                 task.start()
                 time.sleep(range_sleep)
@@ -141,16 +132,8 @@ def use_thread(cookie, index):
             break
 
 
-
 if __name__ == '__main__':
     print('极速版抢券准备...')
-
-    h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
-    print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
-    print ("下一个整点是：", h )
-    #mktime返回秒数时间戳
-    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1000
-    print("time stamp=",starttime)        
     while True:
         if starttime - int(time.time() * 1000) <= 180000:
             break
@@ -158,6 +141,7 @@ if __name__ == '__main__':
             if int(time.time() * 1000) - atime >= 30000:
                 atime = int(time.time() * 1000)
                 print(f'等待获取log中，还差{int((starttime - int(time.time() * 1000)) / 1000)}秒')
+
     get_log_list(len(mycookies) * 50)
     if len(log_list) != 0:
         print(f'{len(log_list)}条log获取完毕')
@@ -173,5 +157,3 @@ if __name__ == '__main__':
 
     else:
         print('暂无可用log')
-
-
