@@ -33,10 +33,11 @@ cookie =os.environ["JD_COOKIE"].split('&')
 mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
 #print(mycookies)
 
-starttime = 1653094799000 
-delay_time = 0.2
+starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
+
+delay_time = 0
 range_n = 20  # 线程个数20
-range_sleep = 0.2  # 间隔时间
+range_sleep = 0.09  # 间隔时间
 
 # 没用的参数
 log_list = []
@@ -97,6 +98,7 @@ def qiang_quan(cookie, i, index):
                       )
     data = f"body={body}"
     try:
+        #print('请求时间：'+str(datetime.datetime.now()))
         res = requests.post(url=url, headers=headers, data=data).json()
         # print(res)
         if res['code'] == '0':
@@ -139,44 +141,18 @@ def use_thread(cookie, index):
                 task.join()
             break
 
-# push推送
-def push_plus_bot(title, content):
-    try:
-        print("\n")
-        if not PUSH_PLUS_TOKEN:
-            print("PUSHPLUS服务的token未设置!!\n取消推送")
-            return
-        print("PUSHPLUS服务启动")
-        url = 'http://pushplus.plus/send'
-        data = {
-            "token": PUSH_PLUS_TOKEN,
-            "title": title,
-            "content": content
-        }
-        body = json.dumps(data).encode(encoding='utf-8')
-        headers = {'Content-Type': 'application/json'}
-        response = requests.post(url=url, data=body, headers=headers).json()
-        if response['code'] == 200:
-            print('推送成功！')
-        else:
-            print('推送失败！')
-            print(response)
-
-    except Exception as e:
-        print(e)
-
-
-
 
 if __name__ == '__main__':
     print('极速版抢券准备...')
 
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
     print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
-    print ("下一个整点是：", h )
+    print ("next hour=", h )
+
+    #elif h in hour
     #mktime返回秒数时间戳
-    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1000
-    print("time stamp=",starttime)        
+    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1200
+    print("time stamp=",starttime)
     while True:
         if starttime - int(time.time() * 1000) <= 180000:
             break
@@ -200,8 +176,3 @@ if __name__ == '__main__':
     else:
         print('暂无可用log')
 
-    #发送通知
-    if '成功' in content:
-        push_plus_bot(title, content)
-    else:
-        print('抢券失败')
