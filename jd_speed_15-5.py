@@ -1,4 +1,5 @@
-﻿# cron "55 9,23 * * *" 
+﻿
+# cron "55 9,23 * * *" 
 # new Env('PY-极速卷15-5')
 import json
 import math
@@ -32,10 +33,11 @@ cookie =os.environ["JD_COOKIE"].split('&')
 mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
 #print(mycookies)
 
-starttime = 1653094799000 
-delay_time = 0.2
+starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
+
+delay_time = 0
 range_n = 20  # 线程个数20
-range_sleep = 0.2  # 间隔时间
+range_sleep = 0.09  # 间隔时间
 
 # 没用的参数
 log_list = []
@@ -96,6 +98,7 @@ def qiang_quan(cookie, i, index):
                       )
     data = f"body={body}"
     try:
+        print('请求时间：'+str(datetime.datetime.now()))
         res = requests.post(url=url, headers=headers, data=data).json()
         # print(res)
         if res['code'] == '0':
@@ -139,17 +142,17 @@ def use_thread(cookie, index):
             break
 
 
-
-
 if __name__ == '__main__':
     print('极速版抢券准备...')
 
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
     print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
-    print ("下一个整点是：", h )
+    print ("next hour=", h )
+
+    #elif h in hour
     #mktime返回秒数时间戳
-    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1000
-    print("time stamp=",starttime)        
+    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1200
+    print("time stamp=",starttime)
     while True:
         if starttime - int(time.time() * 1000) <= 180000:
             break
