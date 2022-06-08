@@ -41,7 +41,7 @@ range_sleep = 0.08  # 间隔时间
 log_list = []
 atime = 0
 PUSH_PLUS_TOKEN = ''
-title = '京东15-5抢券成功'
+title = '京东15-8抢券成功'
 content = []
 
 if "PUSH_PLUS_TOKEN" in os.environ and len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
