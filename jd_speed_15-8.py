@@ -32,16 +32,16 @@ mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6]
 #print(mycookies)
 
 
-starttime = 1653094799000 
-delay_time = 0.2
-range_n = 40  # 线程个数20
+starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
+delay_time = 0
+range_n = 20  # 线程个数20
 range_sleep = 0.08  # 间隔时间
 
 # 没用的参数
 log_list = []
 atime = 0
 PUSH_PLUS_TOKEN = ''
-title = '京东15-8抢券成功'
+title = '京东15-5抢券成功'
 content = []
 
 if "PUSH_PLUS_TOKEN" in os.environ and len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
@@ -99,7 +99,7 @@ def qiang_quan(cookie, i, index):
         res = requests.post(url=url, headers=headers, data=data).json()
         # print(res)
         if res['code'] == '0':
-            print(f"账号{index + 1}：{res['subCodeMsg']}")
+             print('请求时间：' + str(datetime.datetime.now()), f"账号{index + 1}：{res['subCodeMsg']}")
             if '成功' in res['subCodeMsg']:
                 content.append(f"账号{cookie[90:-1]}：{res['subCodeMsg']}")
         else:
@@ -144,10 +144,12 @@ if __name__ == '__main__':
 
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
     print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
-    print ("下一个整点是：", h )
+    print ("next hour=", h )
+
+    #elif h in hour
     #mktime返回秒数时间戳
-    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1000
-    print("time stamp=",starttime)        
+    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1200
+    print("time stamp=",starttime)
     while True:
         if starttime - int(time.time() * 1000) <= 180000:
             break
