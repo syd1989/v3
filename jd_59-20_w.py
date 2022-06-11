@@ -1,4 +1,4 @@
-# cron "55 13 * * *" 
+# cron "50 59 13 * * *" 
 # new Env('PY-59-20免券')
 import json
 import math
@@ -9,10 +9,8 @@ import requests,os
 import datetime
 
 
-#dt_ms = datetime.datetime.now().strftime('%H:%M:%S.%f') # 含微秒的日期时间，
 
-starttime = 1654091999000 #需要精确到毫秒
-#cookie格式：  'jfsdfhksj;'  只能放入一个cookie
+
 
 #os.environ 获取环境变量
 cookie =os.environ["JD_COOKIE"].split('&')
@@ -20,9 +18,15 @@ cookie =os.environ["JD_COOKIE"].split('&')
 mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
 #print(mycookies)
 
-ck = cookie[0]
+ck = cookie[0]  #cookie格式： 只能放入一个cookie
 
-print(ck)
+starttime = 0 #需要精确到毫秒
+range_n = 6
+range_sleep = 0 # 间隔时间
+#elay_time = 0.6 #时间到后延迟600ms启动，可以根据网速更改
+atime=0
+tq=1200   # 提前 于 整点的 时间，单位毫秒
+
 
 #黄鸟包抓包4次url 全部复制进去，  任意一个链接的body复制进去（body为没有编码翻译的那个）。
 url1 = 'https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body=%7B%22activityId%22%3A%22csTQSAnfQypSN7KeyCwJWthE6aV%22%2C%22from%22%3A%22H5node%22%2C%22scene%22%3A%221%22%2C%22args%22%3A%22key%3Dm9a6teebr9iaa0lfc4m6sbb4a6351303%2CroleId%3D76337067%22%7D&client=wh5&clientVersion=1.0.0'
@@ -33,10 +37,6 @@ body2 = '{"activityId":"csTQSAnfQypSN7KeyCwJWthE6aV","from":"H5node","scene":"1"
 
 
 # 一个链接能发三次 每次最多5链接
-range_n = 6
-range_sleep = 0.05 # 间隔时间
-#elay_time = 0.6 #时间到后延迟600ms启动，可以根据网速更改
-
 
 
 headers = {
@@ -57,38 +57,42 @@ def jdtime():
     return int(time.time() * 1000)
     
 if __name__ == '__main__':
-    print('59-20抢券准备...')
-
+    print('极速版抢券准备...')
+    print('时间间隔参数=',range_sleep)
+    print('提前时间参数=',tq)
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
     print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
     print ("next hour=", h )
 
     #elif h in hour
     #mktime返回秒数时间戳，starttime为整点时间提前1.2秒
-    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1200
+    starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - tq
     print("开始抢时间戳=",starttime)
     while True:
-    if jdtime() >= starttime:
-        res = requests.post(url=url1, headers=headers, data=body1).json()
-        print('请求时间：' + str(datetime.datetime.now()), res)
-        time.sleep(range_sleep)
-        res = requests.post(url=url2, headers=headers, data=body2).json()
-        print('请求时间：' + str(datetime.datetime.now()), res)
-        time.sleep(range_sleep)
-        res = requests.post(url=url1, headers=headers, data=body1).json()
-        print('请求时间：' + str(datetime.datetime.now()), res)
-        time.sleep(range_sleep)
-        res = requests.post(url=url2, headers=headers, data=body2).json()
-        print('请求时间：' + str(datetime.datetime.now()), res)
-        time.sleep(range_sleep)
-        res = requests.post(url=url1, headers=headers, data=body1).json()
-        print('请求时间：' + str(datetime.datetime.now()), res)
-        time.sleep(range_sleep)
-        res = requests.post(url=url2, headers=headers, data=body2).json()
-        print('请求时间：' + str(datetime.datetime.now()), res)
-        time.sleep(range_sleep)
-        break
-    else:
-        print('没到时间-现在为：' + jdtime())
+        if jdtime() >= starttime:
+            res = requests.post(url=url1, headers=headers, data=body1).json()
+            print('请求时间：' + str(datetime.datetime.now()), res)
+            time.sleep(range_sleep)
+            res = requests.post(url=url2, headers=headers, data=body2).json()
+            print('请求时间：' + str(datetime.datetime.now()), res)
+            time.sleep(range_sleep)
+            res = requests.post(url=url1, headers=headers, data=body1).json()
+            print('请求时间：' + str(datetime.datetime.now()), res)
+            time.sleep(range_sleep)
+            res = requests.post(url=url2, headers=headers, data=body2).json()
+            print('请求时间：' + str(datetime.datetime.now()), res)
+            time.sleep(range_sleep)
+            res = requests.post(url=url1, headers=headers, data=body1).json()
+            print('请求时间：' + str(datetime.datetime.now()), res)
+            time.sleep(range_sleep)
+            res = requests.post(url=url2, headers=headers, data=body2).json()
+            print('请求时间：' + str(datetime.datetime.now()), res)
+            time.sleep(range_sleep)
+            break
+        else:
+	        if int(time.time() * 1000) - atime >= 5000:
+                 atime = int(time.time() * 1000)
+                 print(f'等待中，还差{int((starttime - int(time.time() * 1000)) / 1000)}秒开始抢券')
+
 
 
