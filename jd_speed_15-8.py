@@ -35,7 +35,7 @@ mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6]
 starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
 delay_time = 0
 range_n = 20  # 线程个数20
-range_sleep = 0.08  # 间隔时间
+range_sleep = 0.1  # 间隔时间
 
 # 没用的参数
 log_list = []
@@ -107,11 +107,12 @@ def qiang_quan(cookie, i, index):
     except:
         pass
 
+	
 
 def jdtime():
     url = 'http://api.m.jd.com/client.action?functionId=queryMaterialProducts&client=wh5'
     headers = {
-        "user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
+        "Cookie": cookie[9],"user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
     }
 
     try:
@@ -120,6 +121,9 @@ def jdtime():
     except:
         return 0
 
+#获取本地时间：		
+def getBdTime():
+    return int(time.time() * 1000)
 
 def use_thread(cookie, index):
     tasks = list()
@@ -128,7 +132,7 @@ def use_thread(cookie, index):
     print(f'账号{index + 1}：等待抢券')
     while True:
         #jdtime>=starttime时启动
-        if jdtime() >= starttime:
+        if getBdTime() >= starttime:
             #starttime提前一秒，所以需要加上延迟
             time.sleep(delay_time)
             for task in tasks:
@@ -138,18 +142,19 @@ def use_thread(cookie, index):
                 task.join()
             break
 
-
+#下方为 主程序
 if __name__ == '__main__':
     print('极速版抢券准备...')
-
+    print('时间间隔参数=',range_sleep)
+	
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
     print ("now time=",(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S") )
     print ("next hour=", h )
 
     #elif h in hour
-    #mktime返回秒数时间戳
+    #mktime返回秒数时间戳，starttime为整点时间提前1.2秒
     starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - 1200
-    print("time stamp=",starttime)
+    print("开始抢时间戳=",starttime)
     while True:
         if starttime - int(time.time() * 1000) <= 180000:
             break

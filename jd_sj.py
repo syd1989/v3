@@ -30,7 +30,7 @@ def jdtime1():
 def jdtime2():
     url = 'http://api.m.jd.com/client.action?functionId=queryMaterialProducts&client=wh5'
     headers = {
-        "Cookie": cookie[0],"user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
+        "Cookie": cookie[5],"user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
     }
 
     try:
