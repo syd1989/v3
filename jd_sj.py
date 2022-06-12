@@ -39,14 +39,10 @@ def jdtime2():
     except:
         return 0
 
-		#本地时间
+#本地时间
 def jdtime3():
     return int(time.time() * 1000)
 
-a=jdtime1()
-b=jdtime2()
-c=jdtime3()
-
-print("阿里在线",a)
-print("京东时间",b)
-print("本地时间",c)
+print("阿里在线",jdtime1())
+print("京东时间",jdtime2())
+print("本地时间",jdtime3())

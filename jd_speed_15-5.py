@@ -26,26 +26,23 @@ key=DF6500A60EBB047C1539292254D320D7E80F9297D19486370D6A0DD220E76A1CD91818B1BCEE
 args = 'key=6E3ED4217CA5BA50CC868072587749279A819E91EC8217F49BC1DB9DC674DA27CF93291755C086262CF2BD2DADDD8138_bingo,roleId=A921D0996A757D3D319487D17C0F25FE0F6830D8485A69E35623B13BFBA59D1E7C2386D90F3D9D3A6D752ADCDEAB0529AA56BDE4467494DC5590AEB5C7C950D03EA337E197D9AF250FA7148376C8A9C2C7826A579EE8919B7B4F046F31A7F33771D69424BE2E31C4957568BC1183F08BD273D933A8092885B34900DD5088BE7BFAF8E88961C07BC6043362DEC0C9D912631C8651646624A0999D730E5CE836A91CC6E9E6E8434EE599FDF702E4461DC9_bingo,strengthenKey=B4CF90C71C84A203BD4F00A15A0D8EAB10847656370FB2FEA1F3FCE7E1A6F5CD010641A17BFFC13415D635F046619797_bingo'
 
 #os.environ 获取环境变量
-cookie =os.environ["JD_COOKIE"].split('&')
+ck =os.environ["JD_COOKIE"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
-mycookies=[cookie[0],cookie[1],cookie[2],cookie[3],cookie[4],cookie[5],cookie[6],cookie[7],cookie[8],cookie[9],cookie[10],cookie[11]]
+mycookies=[ck[0],ck[1],ck[2],ck[3],ck[4],ck[5],ck[6],ck[7],ck[8],ck[9],ck[10],ck[11]]
 #print(mycookies)
 
 starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
 delay_time = 0
 range_n = 20  # 线程个数20
 range_sleep = 0  # 间隔时间
-tq=2300   # 提前 于 整点的 时间，单位毫秒
+tq = 2300   # 提前 于 整点的 时间，单位毫秒
 
 # 没用的参数
 log_list = []
 atime = 0
-PUSH_PLUS_TOKEN = ''
 title = '京东15-5抢券成功'
 content = []
 
-if "PUSH_PLUS_TOKEN" in os.environ and len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
-    PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
 
 
 def get_log_list(num):
@@ -107,7 +104,7 @@ def qiang_quan(cookie, i, index):
     except:
         pass
 
-	
+'''
 
 def jdtime():
     url = 'http://api.m.jd.com/client.action?functionId=queryMaterialProducts&client=wh5'
@@ -120,10 +117,19 @@ def jdtime():
         return int(res['currentTime2'])
     except:
         return 0
+'''
 
-#获取本地时间：		
+#获取系统时间：		
 def getBdTime():
-    return int(time.time() * 1000)
+     #nt为现在时间，格式为 年月日时分秒
+     nt = datetime.datetime.now()
+     #ntdx为现在时间的 转换时间戳 的 对象，用于转换时间戳
+     ntdx = nt.timetuple()
+     #ntmc为现在时间的 秒时间戳
+     ntmc = time.mktime(ntdx)
+     #nthc为现在时间-毫秒时间戳  .microsecond属性返回给定Time对象2022-06-11 19:37:17.289437中的微秒值289437
+     nthc = int(ntmc*1000 + nt.microsecond/1000)
+     return(nthc)
 
 def use_thread(cookie, index):
     tasks = list()
@@ -156,12 +162,12 @@ if __name__ == '__main__':
     starttime =int( time.mktime(time.strptime(h, "%Y-%m-%d %H:%M:%S")) * 1000) - tq
     print("开始抢时间戳=",starttime)
     while True:
-        if starttime - int(time.time() * 1000) <= 180000:
+        if starttime - getBdTime() <= 180000:
             break
         else:
-            if int(time.time() * 1000) - atime >= 30000:
-                atime = int(time.time() * 1000)
-                print(f'等待获取log中，还差{int((starttime - int(time.time() * 1000)) / 1000)}秒')
+            if getBdTime() - atime >= 30000:
+                atime = getBdTime()
+                print(f'等待获取log中，还差{int((starttime - getBdTime()) / 1000)}秒')
     get_log_list(len(mycookies) * 50)
     if len(log_list) != 0:
         print(f'{len(log_list)}条log获取完毕')
@@ -177,4 +183,3 @@ if __name__ == '__main__':
 
     else:
         print('暂无可用log')
-
