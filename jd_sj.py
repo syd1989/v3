@@ -1,5 +1,5 @@
 ﻿# cron "10 22 * * *" 
-# new Env('py平台时间【比对】')
+# new Env('py时间与IP【比对】')
 import json
 import math
 import random
@@ -74,4 +74,6 @@ print("本地时间",getBdTime())
 c=jdtime()-getBdTime()
 print("本地与京东时差:",c,"毫秒")
 
-
+#获取公网IP：
+ip = requests.get('https://checkip.amazonaws.com').text.strip()
+print("本地公网IP地址:",ip)
