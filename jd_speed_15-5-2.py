@@ -28,14 +28,14 @@ args = 'key=6E3ED4217CA5BA50CC868072587749279A819E91EC8217F49BC1DB9DC674DA27CF93
 #os.environ 获取环境变量
 ck =os.environ["JD_COOKIE"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
-mycookies=[ck[6],ck[7],ck[8],ck[9],ck[10],ck[11]]
+mycookies=[ck[0],ck[1],ck[2],ck[3]]
 #print(mycookies)
 
 starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
 delay_time = 0
 range_n = 20  # 线程个数20
 range_sleep = 0  # 间隔时间
-tq = 2200   # 提前 于 整点的 时间，单位毫秒
+tq = 1200   # 提前 于 整点的 时间，单位毫秒
 
 # 没用的参数
 log_list = []
@@ -49,7 +49,7 @@ def get_log_list(num):
     global log_list
     try:
         for i in range(num):
-            url = f'http://192.168.6.105:5889/log'
+            url = f'http://192.168.5.238:5889/log'
             res = requests.get(url=url).json()
             log_list.append(res)
     except:
@@ -150,7 +150,7 @@ def use_thread(cookie, index):
 
 #下方为 主程序
 if __name__ == '__main__':
-    print('极速版抢券【2】...')
+    print('极速版抢券【1】...')
     print('时间间隔参数=',range_sleep)
     print('提前时间参数=',tq)
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
