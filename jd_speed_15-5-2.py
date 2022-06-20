@@ -28,7 +28,7 @@ args = 'key=6E3ED4217CA5BA50CC868072587749279A819E91EC8217F49BC1DB9DC674DA27CF93
 #os.environ 获取环境变量
 ck =os.environ["JD_COOKIE"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
-mycookies=[ck[0],ck[1],ck[2],ck[3]]
+mycookies=[ck[0],ck[1],ck[2]]
 #print(mycookies)
 
 starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58

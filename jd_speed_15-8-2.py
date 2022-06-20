@@ -28,7 +28,7 @@ args = 'key=4C884367B622BB96ABD488103A5036F58B08100D4FEC967D97AA8854BC13AF4A50BE
 #os.environ 获取环境变量
 ck =os.environ["JD_COOKIE"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
-mycookies=[ck[0],ck[1],ck[2],ck[3]]
+mycookies=[ck[0],ck[1],ck[2]]
 #print(mycookies)
 
 
