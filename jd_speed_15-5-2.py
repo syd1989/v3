@@ -49,7 +49,7 @@ def get_log_list(num):
     global log_list
     try:
         for i in range(num):
-            url = f'http://192.168.5.238:5889/log'
+            url = f'http://127.0.0.1:5889/log'
             res = requests.get(url=url).json()
             log_list.append(res)
     except:
@@ -150,7 +150,7 @@ def use_thread(cookie, index):
 
 #下方为 主程序
 if __name__ == '__main__':
-    print('极速版抢券【1】...')
+    print('极速版抢券【2】...')
     print('时间间隔参数=',range_sleep)
     print('提前时间参数=',tq)
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
