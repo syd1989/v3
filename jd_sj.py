@@ -77,3 +77,8 @@ print("本地与京东时差:",c,"毫秒")
 #获取公网IP：
 ip = requests.get('https://checkip.amazonaws.com').text.strip()
 print("本地公网IP地址:",ip)
+
+#获取log测试
+url = f'http://127.0.0.1:5889/log'
+res = requests.get(url=url).json()
+print(res)
