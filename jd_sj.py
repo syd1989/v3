@@ -12,7 +12,7 @@ import ntplib
 #os.environ 获取环境变量
 cookie =os.environ["JD_COOKIE"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
-mycookies=[cookie[0],cookie[1],cookie[2],cookie[3]]
+mycookies=[cookie[0],cookie[1],cookie[2]]
 #print(mycookies)
 
 #阿里在线获取时间
