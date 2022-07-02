@@ -28,13 +28,14 @@ atime=0
 tq=1000   # 提前 于 整点的 时间，单位毫秒
 
 
-#抓POST包获取URL,抓GET包获取body1，总览-第一行的URL点击进去，就是下发的内容。
-url1 = 'https://jccamkt.jr.jd.com/mkt/m/activity/award/v2/receiveAward'
+#URL链接无需改变
+url1 = 'https://jccapt-sp.jr.jd.com/portal/m/dailycoupon/receiveCoupon?channelCode=ICON2'
 
-body1 = '{"cardId":92,"activityId":"202206296947817178245414912","activityType":29,"channelCode":"ICON2"}'
+#黄鸟抓 POST 或者 GET，获取到 新的活动ID，【只需要】更改 活动ID 如：202206296947817178245414912，
+body1 = '{"awardId":1011,"activityId":"202206296947817178245414912","activityType":29,"channelCode":"ICON2"}'
 
 
-#抓POST包的headers
+# headers也无需改变！测试的时候，显示{'status': 77, 'message': '优惠券已抢光，请明日再来', 'data': -1}
 
 headers = {
         "Accept": "application/json, text/plain, */*",
@@ -42,8 +43,8 @@ headers = {
         "Accept-Language": "zh-CN,zh;q=0.9",
         "Connection": "keep-alive",
         "Content-Type": "application/json;charset=UTF-8",
-        'origin': 'https://jcca.jd.com/',
-        "Referer": "https://jcca.jd.com/",
+        'origin': 'https://jccapt.jr.jd.com',
+        "Referer": "https://jccapt.jr.jd.com/home?channelCode=ICON2&jrcontainer=h5&jrlogin=true",
         "Cookie": ck,
         "User-Agent": "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"
     }
