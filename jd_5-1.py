@@ -85,7 +85,7 @@ def qiang_quan(cookie, i, index):
         "User-Agent": Ua()
     }
 
-    body = json.dumps({"activityId": "vN4YuYXS1mPse7yeVPRq4TNvCMR",
+    body = json.dumps({"activityId": "3H885vA4sQj6ctYzzPVix4iiYN2P",
                        "scene": "1",
                        "args": args,
                        "log": log_list[i]['log'],
