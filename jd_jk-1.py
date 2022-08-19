@@ -1,4 +1,4 @@
-﻿# cron "55 9,13 * * *" 
+﻿# cron "55 20,23 * * *" 
 # new Env('PY健康8.9券【玩客】')
 import json
 import math
