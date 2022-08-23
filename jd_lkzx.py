@@ -113,7 +113,7 @@ def getBdTime():
 def use_thread(cookie, index):
     tasks = list()
     for i in range(range_n):
-        tasks.append(threading.Thread(target=qiang_quan, args=(cookie, index * 50 + i, index)))
+        tasks.append(threading.Thread(target=qiang_quan, args=(cookie, index * 20 + i, index)))
     print(f'账号{index + 1}：等待抢券')
     while True:
         #jdtime>=starttime时启动
@@ -132,7 +132,7 @@ if __name__ == '__main__':
     print('立刻抢券【log获取+加载账号中】...')
     
     
-    get_log_list(len(mycookies) * 50)
+    get_log_list(len(mycookies) * 20)
     if len(log_list) != 0:
         print(f'{len(log_list)}条log获取完毕')
         threads = []
