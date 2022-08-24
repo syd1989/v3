@@ -1,5 +1,5 @@
-﻿# cron "55 8,11,14,17 * * *" 
-# new Env('PY极速39-8【玩客】')
+﻿# cron "55 9,13,19,23 * * *" 
+# new Env('PY极速10-9【本地】')
 import json
 import math
 import random
@@ -22,15 +22,14 @@ key=DF6500A60EBB047C1539292254D320D7E80F9297D19486370D6A0DD220E76A1CD91818B1BCEE
 
 '''
 
-# 可以改的参数,当前参数15-8
-args = 'key=B44A3230DBD697A6D298BDBC4E54DFC380B8D89EED4EFC8684A744DA67898100CD8B8576664FDFA4ED25050058A68A69_bingo,roleId=CC000CDD8CFD31A32898F158E1C5D9EF4845F78C42D6D91A4317E3C44361CC4CEC8D3D94E986FC9280B497C81467B3038D3FAD5BA28AA0A4CC2B92CB8A2AFA94116C12D3628CFA2737DB4625A6BDF4C8C75EF1CF65AC30D02AB46FDB848CE83B4B6FC80ACAC41BF843D7E91AAF0F9F81262B0E234AE70E3471BF45CB97014B63DF3C7C108A6EC7E49095F3CCC429DB03A0CEBA4F1A1764B8DA6B546360BD0ED06B86B23AF790BFB7F057BDA2374EF6C2_bingo,strengthenKey=16AC1C9F9C5A799B9F3AF3CF48BEE2ADA2831E619042C332ED9ECCC7B35C636FA4FAE5BE3292749E0A9C7033DB598F35_bingo'
+# 可以改的参数,当前参数15-5
+args = 'key=mba2tae1r5i0a5l5c8m0s0efb6d5b8d0,roleId=82358321'
 
 #os.environ 获取环境变量
 ck =os.environ["JD_COOKIE"].split('&')
 #split()：拆分字符串。通过指定分隔符对字符串进行切片，并返回分割后的字符串列表（list）
 mycookies=[ck[0],ck[1],ck[2]]
 #print(mycookies)
-
 
 starttime = 0  # 开始时间戳 13位 网址：https://tool.lu/timestamp/   5/8 5/7 23:59:58
 delay_time = 0
@@ -41,15 +40,16 @@ tq = 1200   # 提前 于 整点的 时间，单位毫秒
 # 没用的参数
 log_list = []
 atime = 0
-title = '京东15-8抢券成功'
+title = '京东15-5抢券成功'
 content = []
+
 
 
 def get_log_list(num):
     global log_list
     try:
         for i in range(num):
-            url = f'http://192.168.6.105:5889/log'
+            url = f'http://127.0.0.1:5889/log'
             res = requests.get(url=url).json()
             log_list.append(res)
     except:
@@ -85,7 +85,7 @@ def qiang_quan(cookie, i, index):
         "User-Agent": Ua()
     }
 
-    body = json.dumps({"activityId": "vN4YuYXS1mPse7yeVPRq4TNvCMR",
+    body = json.dumps({"activityId": "mcGQa2HPDjDMD96An6T5y3L7GdHi",
                        "scene": "1",
                        "args": args,
                        "log": log_list[i]['log'],
@@ -117,7 +117,6 @@ def jdtime():
         return int(res['currentTime2'])
     except:
         return 0
-
 '''
 
 #获取系统时间：		
@@ -151,7 +150,7 @@ def use_thread(cookie, index):
 
 #下方为 主程序
 if __name__ == '__main__':
-    print('极速版【1】...')
+    print('极速版抢券【2】...')
     print('时间间隔参数=',range_sleep)
     print('提前时间参数=',tq)
     h = (datetime.datetime.now()+datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")   +":00:00"
@@ -184,6 +183,3 @@ if __name__ == '__main__':
 
     else:
         print('暂无可用log')
-
-
-
