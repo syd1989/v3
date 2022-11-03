@@ -1,4 +1,4 @@
-﻿# cron "55 6,9,14 * * *" 
+﻿# cron "55 6,11,15 * * *" 
 # new Env('PY极速【9-3】')
 import json
 import math
